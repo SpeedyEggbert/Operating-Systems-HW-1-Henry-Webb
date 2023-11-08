@@ -1,3 +1,5 @@
+//Code by Henry Webb
+//Code for operating system
 #include <pthread.h>
 #include <fcntl.h>
 #include <stdlib.h>
