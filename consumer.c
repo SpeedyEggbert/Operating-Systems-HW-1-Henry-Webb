@@ -16,6 +16,13 @@ struct shared_memory{
     int buf [1];
 };
 
+//Simple error handler
+void errorHandler(char error[]){
+    shm_unlink("/sharedMem");
+    printf("%s", error);
+    exit(1);
+}
+
 //Takes numbers from table, adds them to a sum, and number in table to 0 ten times
 void* consumer(void* arg){
     int* table = (int*) arg;
@@ -50,21 +57,22 @@ int main(){
 
     //Opens semaphore creaded by producer
     if((mutexSem = sem_open("/sem-mutex", 0, 0, 0)) == SEM_FAILED)
-        assert(1 == 0);
+        errorHandler("Failed to open semaphore");
 
     //Opens shared memory created by producer
     if((fd_shm = shm_open("/sharedMem", O_RDWR, 0)) == -1)
-        assert(1 == 0);
+        errorHandler("Failed to open shared memory");
 
     //Maps shared memory
     if((sharedMemPtr = mmap(NULL, sizeof(struct shared_memory), PROT_READ | PROT_WRITE, MAP_SHARED, fd_shm, 0 )) == MAP_FAILED)
-        assert(1 == 0); //Closed if mapping of shared memory fails
+        errorHandler("Failed to map memory in conusmer");
     
-    pthread_t threadID; //Creates threadID
-    pthread_attr_t attr; //Attributes for thread
-    pthread_attr_init(&attr); //Initializes attributes
+    pthread_t threadID;
+    pthread_attr_t attr;
+    pthread_attr_init(&attr);
+
     pthread_create(&threadID, &attr, consumer, (void*)sharedMemPtr->buf); //Creates one thread for producer
-    pthread_join(threadID, NULL); //Program runs till producer thread is done, returning nothing at the moment
+    pthread_join(threadID, NULL); //Program runs till consumer thread is done
 
     shm_unlink("/sharedMem");
 }
