@@ -1,27 +1,34 @@
-# How To Run
-    Compile and runs **only** on linux
+# Operating System HW 1
 
-    Compile code with commands:
-    ```
-    $gcc producer.c -pthread -lrt -o producer
-    $gcc consumer.c -pthread -lrt -o consumer
-    ```
+## How To Run
 
-    Run code with command:
-    ```
-    $./producer & ./consumer &
-    ```
+Compile and runs **only** on linux
 
-# What it does
-    Two programs used to showcase two processes using semahpores and shared memory
+Compile code with commands:
 
-## Producer
-    -   Creates semaphore and creates shared memory
-    -   Starts producer code in a single thread
-    -   Puts 10 random numbers onto a shared table of two in size
+```console
+$gcc producer.c -pthread -lrt -o producer
+$gcc consumer.c -pthread -lrt -o consumer
+```
 
-## Consumer
-    -   Connects to the semaphore and shared memory
-    -   Starts consumer code in a single thread 
-    -   "Cosnumes" 10 numbers in the table and adds them all up
+Run code with command:
 
+```console
+$./producer & ./consumer &
+```
+
+## What it does
+
+Two programs used to showcase two processes using semahpores and shared memory
+
+### Producer
+
+-Creates semaphore and creates shared memory
+-Starts producer code in a single thread
+-Puts 10 random numbers onto a shared table of two in size
+
+### Consumer
+
+-Connects to the semaphore and shared memory
+-Starts consumer code in a single thread
+-"Cosnumes" 10 numbers in the table and adds them all up
